@@ -13,24 +13,15 @@ class ProjectController extends Controller
         return Project::all();
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
-        return Project::create($request->all());
+        Project::create($request->all());
     }
 
-    public function show(int $id)
+    public function show( $id)
     {
-        return Project::find($id);
-    }
-
-    public function edit(Project $project)
-    {
-        //
+        
+        return Project::where('name', $id)->first();//Project::find($id);
     }
 
     public function update(Request $request, $id)

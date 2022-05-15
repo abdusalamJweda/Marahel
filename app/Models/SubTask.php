@@ -8,7 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class SubTask extends Model
 {
     use HasFactory;
-
+    protected $fillable = [
+        'name',
+        'description',
+        'due_date',
+        'removed',
+        'status',
+        'created_at',
+    ];
     public function task(){
         return $this->belongsTo('App\Models\Task');
     }

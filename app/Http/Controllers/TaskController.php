@@ -13,11 +13,6 @@ class TaskController extends Controller
         return Task::all();
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         return Task::create($request->all());
@@ -28,12 +23,6 @@ class TaskController extends Controller
         return Task::findOrFail($id);
         
     }
-
-    public function edit(Task $task)
-    {
-        //
-    }
-
 
     public function update(Request $request, Task $task)
     {

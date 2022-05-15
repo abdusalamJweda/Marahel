@@ -13,11 +13,6 @@ class PhaseController extends Controller
         return Phase::all();
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         return Phase::create($request->all());
@@ -26,11 +21,6 @@ class PhaseController extends Controller
     public function show( $id)
     {
         return Phase::findOrFail($id);
-    }
-
-    public function edit(Phase $phase)
-    {
-        //
     }
 
     public function update(Request $request, Phase $phase)
