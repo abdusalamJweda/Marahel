@@ -19,16 +19,16 @@ class CreateRolesTable extends Migration
             $table->timestamps();
 
             $table->BigInteger('task_id')->unsigned();
-            $table->foreign('task_id')->references('id')->on('tasks');
+            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
 
             $table->BigInteger('phase_id')->unsigned()->nullable();
-            $table->foreign('phase_id')->references('id')->on('phases');
+            $table->foreign('phase_id')->references('id')->on('phases')->onDelete('cascade');
 
             $table->BigInteger('project_id')->unsigned()->nullable();
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 
             $table->BigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
     }

@@ -26,13 +26,13 @@ class CreateTasksTable extends Migration
 
 
             $table->BigInteger('phase_id')->unsigned()->nullable();
-            $table->foreign('phase_id')->references('id')->on('phases');
+            $table->foreign('phase_id')->references('id')->on('phases')->onDelete('cascade');
 
             $table->BigInteger('project_id')->unsigned()->nullable();
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 
             $table->BigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
     }
