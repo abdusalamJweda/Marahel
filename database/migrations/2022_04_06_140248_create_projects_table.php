@@ -29,7 +29,7 @@ class CreateProjectsTable extends Migration
             $table->timestamps();
 
 
-            $table->BigInteger('user_id')->unsigned()->nullable();
+            $table->BigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

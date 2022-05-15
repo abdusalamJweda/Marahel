@@ -25,11 +25,11 @@ class Project extends Model
     }
 
     public function pahses(){
-        return $this->hasMany('App\Models\Phases');
+        return $this->hasMany('App\Models\Phase');
     }
 
     public function tasks(){
-        return $this->hasMany('App\Models\Tasks');
+        return $this->hasMany('App\Models\Task');
     }
 
     // protected static function newFactory()

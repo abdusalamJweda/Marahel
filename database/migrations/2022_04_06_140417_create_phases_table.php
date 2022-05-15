@@ -24,7 +24,7 @@ class CreatePhasesTable extends Migration
 
             $table->timestamps();
 
-            $table->BigInteger('project_id')->unsigned()->nullable();
+            $table->BigInteger('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 
         });

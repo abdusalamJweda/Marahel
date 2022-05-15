@@ -21,10 +21,10 @@ class Phase extends Model
     ];
     
     public function project(){
-        return $this->belongsTo('App\Models\Projects');
+        return $this->belongsTo('App\Models\Project');
     }
 
     public function tasks(){
-        return $this->hasMany('App\Models\Tasks');
+        return $this->hasMany('App\Models\Task');
     }
 }

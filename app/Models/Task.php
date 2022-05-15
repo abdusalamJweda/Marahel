@@ -9,12 +9,12 @@ class Task extends Model
 {
     use HasFactory;
     public function subTasks(){
-        return $this->hasMany('App\Models\SubTasks');
+        return $this->hasMany('App\Models\SubTask');
     }
     public function phase(){
-        return $this->belongsTo('App\Models\Phases');
+        return $this->belongsTo('App\Models\Phase');
     }
     public function project(){
-        return $this->belongsTo('App\Models\Projects');
+        return $this->belongsTo('App\Models\Project');
     }
 }
