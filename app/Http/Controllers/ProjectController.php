@@ -15,6 +15,10 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        // just testing out validation, this works, but it can be done better, using seperation of intrestes
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+        ]);
         Project::create($request->all());
     }
 

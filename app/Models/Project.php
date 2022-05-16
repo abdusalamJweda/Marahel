@@ -17,6 +17,7 @@ class Project extends Model
         'removed',
         'status',
         'created_at',
+        'user_id',
 
     ];
 
