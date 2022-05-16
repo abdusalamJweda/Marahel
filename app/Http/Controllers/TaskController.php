@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskStoreRequest;
 
 class TaskController extends Controller
 {
@@ -13,9 +14,10 @@ class TaskController extends Controller
         return Task::all();
     }
 
-    public function store(Request $request)
+    public function store(TaskStoreRequest $request)
     {
-        return Task::create($request->all());
+        $validData = $request->validated();
+        Task::create($request->all());
     }
 
     public function show($id)

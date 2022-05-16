@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Phase;
 use Illuminate\Http\Request;
+use App\Http\Requests\PhaseStoreRequest;
 
 class PhaseController extends Controller
 {
@@ -13,9 +14,10 @@ class PhaseController extends Controller
         return Phase::all();
     }
 
-    public function store(Request $request)
+    public function store(PhaseStoreRequest $request)
     {
-        return Phase::create($request->all());
+        $validData = $request->validated();
+        Phase::create($request->all());
     }
 
     public function show( $id)

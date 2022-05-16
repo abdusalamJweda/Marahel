@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProjectStoreRequest;
+
 
 class ProjectController extends Controller
 {
@@ -13,12 +15,9 @@ class ProjectController extends Controller
         return Project::all();
     }
 
-    public function store(Request $request)
+    public function store(ProjectStoreRequest $request)
     {
-        // just testing out validation, this works, but it can be done better, using seperation of intrestes
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-        ]);
+        $validData = $request->validated();
         Project::create($request->all());
     }
 

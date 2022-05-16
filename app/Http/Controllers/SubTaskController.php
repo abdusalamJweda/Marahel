@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SubTask;
 use Illuminate\Http\Request;
+use App\Http\Requests\SubTaskStoreRequest;
 
 class SubTaskController extends Controller
 {
@@ -12,9 +13,9 @@ class SubTaskController extends Controller
     {
         return SubTask::all();
     }
-
-    public function store(Request $request)
+    public function store(SubTaskStoreRequest $request)
     {
+        $validData = $request->validated();
         SubTask::create($request->all());
     }
 
