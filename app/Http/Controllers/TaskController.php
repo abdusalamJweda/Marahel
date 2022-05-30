@@ -14,6 +14,10 @@ class TaskController extends Controller
         return Task::all();
     }
 
+    public function findByPhaseId(int $id){
+        return Task::where('phase_id', $id)->get()->all();
+    }
+
     public function store(TaskStoreRequest $request)
     {
         $validData = $request->validated();

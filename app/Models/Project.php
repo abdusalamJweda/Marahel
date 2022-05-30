@@ -33,6 +33,10 @@ class Project extends Model
         return $this->hasMany('App\Models\Task');
     }
 
+    // public function getTotalP(){
+    //     return $this->total_phases;
+    // }
+
     // protected static function newFactory()
     // {
     //     return ProjectsFactory::new();

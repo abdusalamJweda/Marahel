@@ -15,16 +15,21 @@ class ProjectController extends Controller
         return Project::all();
     }
 
+    public function findByName(string $name){
+        return Project::where('name', 'LIKE', "%{$name}%")->get()->all();
+    }
+
+
     public function store(ProjectStoreRequest $request)
     {
         $validData = $request->validated();
         Project::create($request->all());
     }
 
-    public function show( $id)
+    public function show(int $id)
     {
         
-        return Project::where('name', $id)->first();//Project::find($id);
+        return Project::where('id', $id)->first();//Project::find($id);
     }
 
     public function update(Request $request, $id)

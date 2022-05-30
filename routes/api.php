@@ -10,6 +10,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\SubTaskController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +23,21 @@ use App\Http\Controllers\UserController;
 |
 */
 
+// didn't even touch this :v
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
+Route::get('projects/findByName/{name}', 'App\Http\Controllers\ProjectController@findByName');
+Route::get('phases/findByProjectId/{id}', 'App\Http\Controllers\PhaseController@findByProjectId');
+Route::get('tasks/findByPhaseId/{id}', 'App\Http\Controllers\TaskController@findByPhaseId');
+
+
 Route::apiResource('projects', ProjectController::class);
+
+
 
 Route::apiResource('phases', PhaseController::class);
 
