@@ -5,15 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Project extends Model
 {
     use HasFactory;
+
+    // append getters to pass in json
+    //protected $appends = ['progress'];
+
     protected $fillable = [
         'name',
         'description',
         'due_date',
-        'total_phases',
-        'total_tasks',
+
         'removed',
         'status',
         'created_at',
@@ -33,9 +37,7 @@ class Project extends Model
         return $this->hasMany('App\Models\Task');
     }
 
-    // public function getTotalP(){
-    //     return $this->total_phases;
-    // }
+
 
     // protected static function newFactory()
     // {

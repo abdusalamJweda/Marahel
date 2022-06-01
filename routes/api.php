@@ -32,7 +32,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('projects/findByName/{name}', 'App\Http\Controllers\ProjectController@findByName');
 Route::get('phases/findByProjectId/{id}', 'App\Http\Controllers\PhaseController@findByProjectId');
+Route::get('phases/AllDoneByProjectId/{id}', 'App\Http\Controllers\PhaseController@AllDoneByProjectId');
 Route::get('tasks/findByPhaseId/{id}', 'App\Http\Controllers\TaskController@findByPhaseId');
+
+
+
 
 
 Route::apiResource('projects', ProjectController::class);

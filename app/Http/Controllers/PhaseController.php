@@ -17,6 +17,9 @@ class PhaseController extends Controller
     public function findByProjectId(int $id){
         return Phase::where('project_id', $id)->get()->all();
     }
+    public function AllDoneByProjectId(int $id){
+        return Phase::where('project_id', $id)->Where('status', 1)->get()->all();
+    }
     public function store(PhaseStoreRequest $request)
     {
         $validData = $request->validated();

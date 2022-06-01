@@ -20,8 +20,7 @@ class CreateProjectsTable extends Migration
             $table->string('description')->nullable();
             $table->datetime('due_date')->nullable();
             
-            $table->integer('total_phases');// total number of phases, for reports
-            $table->integer('total_tasks');// total number of tasks, for reports
+            
             
             $table->boolean('removed');
             $table->boolean('status');

@@ -20,7 +20,7 @@ class PhaseFactory extends Factory
             'name' => $this->faker->name(),
             'description' => $this->faker->name(), //$this->faker->unique()->safeEmail(),
             'due_date' => $this->faker->dateTime($max = 'now', $timezone = null),
-            'total_tasks' => $this->faker->randomDigit(), 
+           
             'removed' => $this->faker->numberBetween($min = 0, $max = 1),
             'status' => $this->faker->numberBetween($min = 0, $max = 1),
             'created_at' => $this->faker->dateTime($max = 'now', $timezone = null),

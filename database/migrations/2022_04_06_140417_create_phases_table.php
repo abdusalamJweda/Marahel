@@ -18,7 +18,7 @@ class CreatePhasesTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->datetime('due_date')->nullable();
-            $table->integer('total_tasks'); // total number of tasks, for reports
+           
             $table->boolean('removed');
             $table->boolean('status');
 

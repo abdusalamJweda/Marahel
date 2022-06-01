@@ -36,7 +36,6 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($id);
         $project->update($request->all());
-
         return $project;
     }
 
@@ -45,4 +44,6 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
         $project->delete(); 
     }
+
+
 }

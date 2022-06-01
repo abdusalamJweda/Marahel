@@ -12,8 +12,6 @@ class Phase extends Model
         'name',
         'description',
         'due_date',
-        'total_phases',
-        'total_tasks',
         'removed',
         'status',
         'created_at',
