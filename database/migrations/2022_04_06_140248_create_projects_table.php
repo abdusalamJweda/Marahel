@@ -22,8 +22,8 @@ class CreateProjectsTable extends Migration
             
             
             
-            $table->boolean('removed');
-            $table->boolean('status');
+            $table->softDeletes();
+            $table->boolean('status')->default('0');
 
             $table->timestamps();
 

@@ -3,46 +3,172 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Phase;
+use Illuminate\Http\Response;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProjectStoreRequest;
+use Illuminate\Support\Facades\DB;
 
 
 class ProjectController extends Controller
 {
 
+    
     public function index()
     {
-        return Project::all();
+        // Project::withTrashed()->get()->all(); to get with deleted
+        $projects = Project::all();
+        return $projects;
     }
 
-    public function findByName(string $name){
-        return Project::where('name', 'LIKE', "%{$name}%")->get()->all();
+    public function assignedProjects($userId){
+        $userRoles = Role::where('user_id', $userId)->pluck('project_id')->toArray();
+        $assignedProjects = Project::whereIn('id', $userRoles)->orderBy('created_at', 'DESC')->get();
+        return $assignedProjects;
+
     }
 
+    public function recentProjects(){
+        
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
 
-    public function store(ProjectStoreRequest $request)
+
+        $userProjects = Project::where('user_id', $userId)->orderBy('created_at', 'DESC')->get();
+        
+        $userRoles = Role::where('user_id', $userId)->pluck('project_id')->toArray();
+        $assignedProjects = Project::whereIn('id', $userRoles)->orderBy('created_at', 'DESC')->get();
+        
+        if(!$userProjects && !$assignedProjects){
+
+            return response([
+                "message" => "No projects yet :\ ",
+            ]);
+        }
+        $recentProjects = [
+            $userProjects,
+            $assignedProjects,
+        ];
+
+        return response([
+            "userProjects" => $userProjects,
+            "assignedProjects" => $assignedProjects
+        ]);
+
+    }
+    public function findByName(Request $request){
+
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+
+        $fileds = $request->validate([
+            
+            'project_name' => 'required'
+            
+        ]);
+        
+        $project = Project::where('name', 'LIKE', "%{$fileds['project_name']}%")->where('user_id', '=', $userId)->get()->all();
+
+        $userRoles = Role::where('user_id', $userId)->pluck('project_id')->toArray();
+        $assignedProjects = Project::whereIn('id', $userRoles)->where('name', 'LIKE', "%{$fileds['project_name']}%")->where('user_id', '<>', $userId)->get()->all();
+
+        $response = [
+            "projects" => $project,
+            "assignedProjects" => $assignedProjects
+        ];
+        return response($response);
+    }
+
+    public function store(Request $request)
     {
-        $validData = $request->validated();
-        Project::create($request->all());
+        //$userId = array('user_is' => auth()->user()->currentAccessToken()->tokenable['id']);
+        
+        $fileds = $request->validate([
+            'name'=> 'required',
+            'description'=> 'required',
+            'due_date'=> 'required',
+            'user_id' =>'required'
+        ]);
+        
+
+        // array_push($fileds, "user_id", auth()->user()->currentAccessToken()->tokenable['id']);
+        // dd(auth()->user()->currentAccessToken()->tokenable['id']);
+        
+        $projects = Project::create($fileds);
+
+        return response([
+            $projects
+        ], 200);
     }
 
-    public function show(int $id)
+    public function show(Request $request)
     {
         
-        return Project::where('id', $id)->first();//Project::find($id);
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+        $fileds = $request->validate([
+            'project_id' => 'required',
+        ]);
+
+
+        $project = Project::where('id', $fileds['project_id'])->first();
+
+        $phases = Phase::where('project_id', $fileds['project_id'])->get()->all();
+        
+        $response = [
+            "projects" => $project,
+            "phases" => $phases
+        ];
+        return $response;
+
+        
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $project = Project::findOrFail($id);
-        $project->update($request->all());
+
+        
+        
+
+        $fileds = $request->validate([
+
+            'project_id' => 'required',
+            'user_id' => 'required',
+            'name' => '',
+            'description'=>'',
+            'due_date' => '',
+            'status' => '',
+
+        ]);
+        $project = Project::findOrFail($fileds['project_id']);
+        
+        $project->update($fileds);
+        // dd($project);
+
         return $project;
+
+        
+        
+        // return $project;
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $project = Project::findOrFail($id);
-        $project->delete(); 
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+        $fileds = $request->validate([
+            'project_id' => 'required',
+        ]);
+
+        $project = Project::findOrFail($fileds['project_id']);
+        if($project->user_id != auth()->user()->currentAccessToken()->tokenable['id']){
+            return response([
+                "message" => "you donot have permission"
+            ]);
+        }
+
+        $project->delete();
+
+        return response([
+            "message" => "project Deleted"
+        ], 200);
     }
 
 

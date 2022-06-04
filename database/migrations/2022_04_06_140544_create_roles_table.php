@@ -18,6 +18,8 @@ class CreateRolesTable extends Migration
             $table->string('name');
             $table->timestamps();
 
+            $table->softDeletes();
+
             $table->BigInteger('project_id')->unsigned();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 

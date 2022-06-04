@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\User;
+use App\Models\Project;
+use App\Models\Phase;
+use App\Models\Task;
 
 class User extends Authenticatable
 {
@@ -41,4 +45,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function projects(){
+        return Project::where('user_id', $this->id)->get();
+        // $this->hasMany('App\Models\Project');
+    }
+
+    public function phases(){
+
+        //define user_id in migration first
+
+        // return Phase::where('user_id', $this->id)->get();
+        // $this->hasMany('App\Models\Phase');
+    }
+
+    public function tasks(){
+        return Task::where('user_id', $this->id)->get();
+        // $this->hasMany('App\Models\Task');
+    }
+
+    public function roles(){
+        return Role::where('user_id', $this->id)->get();
+        // $this->hasMany('App\Models\Role');
+    }
 }

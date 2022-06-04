@@ -19,8 +19,8 @@ class CreatePhasesTable extends Migration
             $table->string('description')->nullable();
             $table->datetime('due_date')->nullable();
            
-            $table->boolean('removed');
-            $table->boolean('status');
+            $table->softDeletes();
+            $table->boolean('status')->default('0');
 
             $table->timestamps();
 

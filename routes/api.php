@@ -25,30 +25,59 @@ use App\Http\Controllers\SearchController;
 
 // didn't even touch this :v
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+
+
+// public routes
+// all should be in protected
+
+
+Route::post('register', 'App\Http\Controllers\AuthController@register');
+Route::get('logIn', 'App\Http\Controllers\AuthController@logIn');
+
+// protected routes
+Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    Route::get('recentProjects', 'App\Http\Controllers\ProjectController@recentProjects');
+
+    Route::get('logOut', 'App\Http\Controllers\AuthController@logOut');
+
+
+    Route::get('projects', 'App\Http\Controllers\ProjectController@index');
+    Route::get('projects/findByName', 'App\Http\Controllers\ProjectController@findByName');
+    Route::post('projects/store', 'App\Http\Controllers\ProjectController@store');
+    Route::get('projects/show', 'App\Http\Controllers\ProjectController@show');
+    Route::post('projects/update', 'App\Http\Controllers\ProjectController@update');
+    Route::delete('projects/destroy', 'App\Http\Controllers\ProjectController@destroy');
+
+
+
+    
+    Route::get('phases/findByProjectId/{id}', 'App\Http\Controllers\PhaseController@findByProjectId');
+    Route::get('phases/AllDoneByProjectId/{id}', 'App\Http\Controllers\PhaseController@AllDoneByProjectId');
+    Route::get('tasks/findByPhaseId/{id}', 'App\Http\Controllers\TaskController@findByPhaseId');
+    Route::get('users/signIn/{email}/{password}', 'App\Http\Controllers\UserController@signIn');
+
+    Route::get('users','App\Http\Controllers\UserController@index');
+
 });
 
 
-Route::get('projects/findByName/{name}', 'App\Http\Controllers\ProjectController@findByName');
-Route::get('phases/findByProjectId/{id}', 'App\Http\Controllers\PhaseController@findByProjectId');
-Route::get('phases/AllDoneByProjectId/{id}', 'App\Http\Controllers\PhaseController@AllDoneByProjectId');
-Route::get('tasks/findByPhaseId/{id}', 'App\Http\Controllers\TaskController@findByPhaseId');
+
+
+// Route::apiResource('projects', ProjectController::class);
 
 
 
+// Route::apiResource('phases', PhaseController::class);
 
+// Route::apiResource('Roles', RoleController::class);
 
-Route::apiResource('projects', ProjectController::class);
+// Route::apiResource('tasks', TaskController::class);
 
+// Route::apiResource('sub_tasks', SubTaskController::class);
 
-
-Route::apiResource('phases', PhaseController::class);
-
-Route::apiResource('Roles', RoleController::class);
-
-Route::apiResource('tasks', TaskController::class);
-
-Route::apiResource('sub_tasks', SubTaskController::class);
-
-Route::apiResource('users', UserController::class); 
+// Route::apiResource('users', UserController::class); 

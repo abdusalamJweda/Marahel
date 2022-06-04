@@ -18,8 +18,8 @@ class CreateSubTasksTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->datetime('due_date')->nullable();
-            $table->boolean('removed');
-            $table->boolean('status');
+            $table->softDeletes();
+            $table->boolean('status')->default('0');
 
             $table->timestamps();
 
