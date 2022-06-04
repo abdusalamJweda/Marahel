@@ -53,6 +53,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('projects/update', 'App\Http\Controllers\ProjectController@update');
     Route::delete('projects/destroy', 'App\Http\Controllers\ProjectController@destroy');
 
+    Route::get('phases', 'App\Http\Controllers\PhaseController@index');
+    Route::get('phases/findByName', 'App\Http\Controllers\PhaseController@findByName');
+    Route::post('phases/store', 'App\Http\Controllers\PhaseController@store');
+    Route::get('phases/show', 'App\Http\Controllers\PhaseController@show');
+    Route::post('phases/update', 'App\Http\Controllers\PhaseController@update');
+    Route::delete('phases/destroy', 'App\Http\Controllers\PhaseController@destroy');
+
 
 
     

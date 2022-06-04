@@ -4,22 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Phase extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
         'description',
         'due_date',
-        'removed',
+        'project_id',
         'status',
         'created_at',
 
     ];
     
     public function project(){
-        return $this->belongsTo('App\Models\Project');
+        return Project::findOrFail($this->project_id);
+        //  $this->belongsTo('App\Models\Project');
     }
 
     public function tasks(){

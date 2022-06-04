@@ -6,42 +6,125 @@ use App\Models\Phase;
 use Illuminate\Http\Request;
 use App\Http\Requests\PhaseStoreRequest;
 
+
+use App\Models\Project;
+use App\Models\Task;
+
+use Illuminate\Http\Response;
+use App\Models\Role;
+
+use App\Http\Requests\ProjectStoreRequest;
+use Illuminate\Support\Facades\DB;
+
+
 class PhaseController extends Controller
 {
 
     public function index()
     {
-        return Phase::all();
+        // Phase::withTrashed()->get()->all(); to get with deleted
+        $phases = Phase::all();
+        return $phases;
     }
 
-    public function findByProjectId(int $id){
-        return Phase::where('project_id', $id)->get()->all();
+
+    public function findByName(Request $request){
+
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+
+        $fileds = $request->validate([
+            
+            'phase_name' => 'required'
+            
+            
+        ]);
+        
+        $phases = Phase::where('name', 'LIKE', "%{$fileds['phase_name']}%")->get()->all();
+
+        return response($phases);
     }
-    public function AllDoneByProjectId(int $id){
-        return Phase::where('project_id', $id)->Where('status', 1)->get()->all();
-    }
-    public function store(PhaseStoreRequest $request)
+
+    public function store(Request $request)
     {
-        $validData = $request->validated();
-        Phase::create($request->all());
+        //$userId = array('user_is' => auth()->user()->currentAccessToken()->tokenable['id']);
+        
+        $fileds = $request->validate([
+            'project_id' => 'required',
+            'name'=> 'required',
+            'description'=> 'required',
+            'due_date'=> 'required',
+            'user_id' =>'required'
+        ]);
+
+        
+        $phase = Phase::create($fileds);
+
+        return response([
+            $phase
+        ], 200);
     }
 
-    public function show( $id)
+    public function show(Request $request)
     {
-        return Phase::findOrFail($id);
+        
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+        $fileds = $request->validate([
+            'phase_id' => 'required',
+        ]);
+
+
+        $phase = Phase::where('id', $fileds['phase_id'])->first();
+
+        $tasks = Task::where('phase_id', $fileds['phase_id'])->get()->all();
+        
+        $response = [
+            "phase" => $phase,
+            "tasks" => $tasks
+        ];
+        return $response;
+
+        
     }
 
-    public function update(Request $request, Phase $phase)
+    public function update(Request $request)
     {
-        $phase = Phase::find($id);
-        $phase->update($request->all());
 
-        return $task;
+        $fileds = $request->validate([
+            'phase_id' => 'required',
+            'project_id' => 'required',
+            'user_id' => 'required',
+            'name' => '',
+            'description'=>'',
+            'due_date' => '',
+            'status' => '',
+        ]);
+        $phase = Phase::findOrFail($fileds['phase_id']);
+        
+        $phase->update($fileds);
+        // dd($project);
+        return $phase;
+
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $phase = Phase::findOrFail($id);
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+        $fileds = $request->validate([
+            'phase_id' => 'required',
+        ]);
+
+        $phase = Phase::findOrFail($fileds['phase_id']);
+        if($phase->project()->user()->id != auth()->user()->currentAccessToken()->tokenable['id']){
+            return response([
+                "message" => "you donot have permission"
+            ]);
+        }
+
         $phase->delete();
+
+        return response([
+            "message" => "phase Deleted"
+        ], 200);
     }
+
 }
