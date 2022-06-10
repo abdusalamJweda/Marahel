@@ -23,6 +23,19 @@ use App\Http\Controllers\SearchController;
 |
 */
 
+
+/* 
+            HTTP Syayus codes... from https://en.wikipedia.org/wiki/List_of_HTTP_status_codes  
+
+    status code => meaning
+    201 => Created
+    403 => forbidden
+
+
+
+
+*/
+
 // didn't even touch this :v
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -36,7 +49,7 @@ use App\Http\Controllers\SearchController;
 
 
 Route::post('register', 'App\Http\Controllers\AuthController@register');
-Route::get('logIn', 'App\Http\Controllers\AuthController@logIn');
+Route::post('logIn', 'App\Http\Controllers\AuthController@logIn');
 
 // protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

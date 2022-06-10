@@ -26,9 +26,8 @@ class PhaseController extends Controller
         $phases = Phase::all();
         return $phases;
     }
-
-
-    public function findByName(Request $request){
+    public function findByName(Request $request)
+    {
 
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
 
@@ -43,7 +42,6 @@ class PhaseController extends Controller
 
         return response($phases);
     }
-
     public function store(Request $request)
     {
         //$userId = array('user_is' => auth()->user()->currentAccessToken()->tokenable['id']);
@@ -63,7 +61,6 @@ class PhaseController extends Controller
             $phase
         ], 200);
     }
-
     public function show(Request $request)
     {
         
@@ -85,7 +82,6 @@ class PhaseController extends Controller
 
         
     }
-
     public function update(Request $request)
     {
 
@@ -105,7 +101,6 @@ class PhaseController extends Controller
         return $phase;
 
     }
-
     public function destroy(Request $request)
     {
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];

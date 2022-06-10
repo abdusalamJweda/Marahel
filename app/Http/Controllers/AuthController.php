@@ -14,9 +14,21 @@ class AuthController extends Controller
 
         $fileds = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|unique:users,email',
+            'email' => 'required|string',
             'password'=> 'required|string|confirmed',
         ]);
+        
+        if(!filter_var($fileds['email'], FILTER_VALIDATE_EMAIL)){
+            return response([
+                'message' => 'invalid Email format'
+            ], 403);
+        }
+        if($user = User::where('email', $fileds['email'])->first()){
+            return response([
+                'message' => 'This Email Is already registered'
+            ], 403);
+        }
+
 
         $user = User::create([
             'name' => $fileds['name'],
@@ -47,7 +59,7 @@ class AuthController extends Controller
         if(!$user = User::where('email', $fileds['email'])->first()){
             return response([
                 'message' => 'wrong E-mail'
-            ], 401);
+            ], 403);
         }
 
         
@@ -56,9 +68,11 @@ class AuthController extends Controller
         if(!$user || !Hash::check($fileds['password'], $user->password)){
             return response([
                 'message' => 'wrong password'
-            ], 401);
+            ], 403);
         }
 
+
+        // user is valid... do whatever
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
@@ -70,7 +84,8 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
-    public function logOut(Request $request){
+    public function logOut(){
+
         auth()->user()->tokens()->delete();
         return [
             'message' => 'Logged Out'

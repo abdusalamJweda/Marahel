@@ -30,7 +30,10 @@ class ProjectController extends Controller
     }
 
     public function recentProjects(){
+
         
+
+
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
 
 
@@ -45,6 +48,7 @@ class ProjectController extends Controller
                 "message" => "No projects yet :\ ",
             ]);
         }
+        
         $recentProjects = [
             $userProjects,
             $assignedProjects,
@@ -80,18 +84,16 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        //$userId = array('user_is' => auth()->user()->currentAccessToken()->tokenable['id']);
+        $userId = array('user_is' => auth()->user()->currentAccessToken()->tokenable['id']);
         
         $fileds = $request->validate([
             'name'=> 'required',
             'description'=> 'required',
             'due_date'=> 'required',
-            'user_id' =>'required'
         ]);
         
-
-        // array_push($fileds, "user_id", auth()->user()->currentAccessToken()->tokenable['id']);
-        // dd(auth()->user()->currentAccessToken()->tokenable['id']);
+        $fileds = array_merge($fileds, ["user_id" => auth()->user()->currentAccessToken()->tokenable['id']]);
+        //dd($fileds);
         
         $projects = Project::create($fileds);
 
@@ -104,6 +106,7 @@ class ProjectController extends Controller
     {
         
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+
         $fileds = $request->validate([
             'project_id' => 'required',
         ]);
@@ -118,8 +121,6 @@ class ProjectController extends Controller
             "phases" => $phases
         ];
         return $response;
-
-        
     }
 
     public function update(Request $request)

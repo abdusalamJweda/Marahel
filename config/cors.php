@@ -29,6 +29,8 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+
+    //changed this to true ro resolve an authintication error
+    'supports_credentials' => true,
 
 ];
