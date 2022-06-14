@@ -31,6 +31,6 @@ return [
 
 
     //changed this to true ro resolve an authintication error
-    'supports_credentials' => true,
+    'supports_credentials' => false,
 
 ];
