@@ -117,7 +117,7 @@ class ProjectController extends Controller
         $phases = Phase::where('project_id', $fileds['project_id'])->get()->all();
         
         $response = [
-            "projects" => $project,
+            "project" => $project,
             "phases" => $phases
         ];
         return $response;
