@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('projects', 'App\Http\Controllers\ProjectController@index');
     Route::get('projects/findByName', 'App\Http\Controllers\ProjectController@findByName');
     Route::post('projects/store', 'App\Http\Controllers\ProjectController@store');
-    Route::post('projects/show', 'App\Http\Controllers\ProjectController@show');
+    Route::get('projects/show', 'App\Http\Controllers\ProjectController@show');
     Route::post('projects/update', 'App\Http\Controllers\ProjectController@update');
     Route::delete('projects/destroy', 'App\Http\Controllers\ProjectController@destroy');
 
