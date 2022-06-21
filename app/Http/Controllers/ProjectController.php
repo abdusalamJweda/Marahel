@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Phase;
 use Illuminate\Http\Response;
 use App\Models\Role;
+use App\Models\Teams;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProjectStoreRequest;
 use Illuminate\Support\Facades\DB;
@@ -39,8 +40,9 @@ class ProjectController extends Controller
 
         $userProjects = Project::where('user_id', $userId)->orderBy('created_at', 'DESC')->get();
         
-        $userRoles = Role::where('user_id', $userId)->pluck('project_id')->toArray();
-        $assignedProjects = Project::whereIn('id', $userRoles)->orderBy('created_at', 'DESC')->get();
+        $userRoles = Role::where('user_id', $userId)->pluck('team_id')->toArray();
+        $userTeams = Teams::where('id', $userRoles)->pluck('project_id')->toArray();
+        $assignedProjects = Project::whereIn('id', $userTeams)->orderBy('created_at', 'DESC')->get();
         
         if(!$userProjects && !$assignedProjects){
 
@@ -56,7 +58,7 @@ class ProjectController extends Controller
 
         return response([
             "userProjects" => $userProjects,
-            "assignedProjects" => $assignedProjects
+            "assignedProjects" => "cat"
         ]);
 
     }

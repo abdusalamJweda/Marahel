@@ -23,7 +23,7 @@ class SubTaskFactory extends Factory
             'name' => $this->faker->name(),
             'description' => $this->faker->name(), //$this->faker->unique()->safeEmail(),
             'due_date' => $this->faker->dateTime($max = 'now', $timezone = null),
-            'removed' => $this->faker->numberBetween($min = 0, $max = 1),
+            'deleted_at' => $this->faker->numberBetween($min = 0, $max = 1),
             'status' => $this->faker->numberBetween($min = 0, $max = 1),
             
             'task_id'=> Task::pluck('id')[$this->faker->numberBetween(1, Task::count()-1)],

@@ -22,8 +22,8 @@ class ProjectFactory extends Factory
             'description' => $this->faker->name(), //$this->faker->unique()->safeEmail(),
             'due_date' => $this->faker->dateTime($max = 'now', $timezone = null),
            
-            'removed' => $this->faker->numberBetween($min = 0, $max = 1),
-            'status' => $this->faker->numberBetween($min = 0, $max = 1),
+            // 'deleted_at' => $this->faker->numberBetween($min = 0, $max = 1),
+            // 'status' => $this->faker->numberBetween($min = 0, $max = 1),
             'created_at' => $this->faker->dateTime($max = 'now', $timezone = null),
             'updated_at' => $this->faker->dateTime($max = 'now', $timezone = null),
             'user_id'=> User::pluck('id')[$this->faker->numberBetween(1, User::count()-1)],

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-use App\Models\Project;
+use App\Models\Teams;
 
 class Role extends Model
 {
@@ -13,11 +13,11 @@ class Role extends Model
     protected $fillable = [
         'name',
         'user_id',
-        'project_id'
+        'team_id'
     ];
 
-    public function project(){
-        return Project::where('id', $this->project_id)->first();
+    public function team(){
+        return Teams::where('id', $this->project_id)->first();
         // $this->belongsTo('App\Models\Project');
     }
     public function user(){
