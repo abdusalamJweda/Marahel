@@ -115,12 +115,14 @@ class ProjectController extends Controller
 
 
         $project = Project::where('id', $fileds['project_id'])->first();
-
-        $phases = Phase::where('project_id', $fileds['project_id'])->get()->all();
+        $teams = Teams::where('project_id', $fileds['project_id'])->get()->toArray();
+        $phases = Phase::where('project_id', $fileds['project_id'])->get()->toArray();
         
         $response = [
             "project" => $project,
-            "phases" => $phases
+            "phases" => $phases,
+            "teams"=> $teams,
+
         ];
         return $response;
     }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Phase extends Model
 {
     use HasFactory, SoftDeletes;
+    
     protected $fillable = [
         'name',
         'description',
@@ -20,8 +21,8 @@ class Phase extends Model
     ];
     
     public function project(){
-        return Project::findOrFail($this->project_id);
-        //  $this->belongsTo('App\Models\Project');
+        return Project::where('id', $this->project_id)->first();
+        // $this->belongsTo('App\Models\Project');
     }
 
     public function tasks(){
