@@ -65,7 +65,7 @@ class ProjectController extends Controller
     public function findByName(Request $request){
 
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
-
+        // dd($request);
         $fileds = $request->validate([
             
             'project_name' => 'required'
@@ -74,8 +74,9 @@ class ProjectController extends Controller
         
         $project = Project::where('name', 'LIKE', "%{$fileds['project_name']}%")->where('user_id', '=', $userId)->get()->all();
 
-        $userRoles = Role::where('user_id', $userId)->pluck('project_id')->toArray();
-        $assignedProjects = Project::whereIn('id', $userRoles)->where('name', 'LIKE', "%{$fileds['project_name']}%")->where('user_id', '<>', $userId)->get()->all();
+        $userRoles = Role::where('user_id', $userId)->pluck('team_id')->toArray();
+        $userTeams = Teams::where('id', $userRoles)->pluck('project_id')->toArray();
+        $assignedProjects = Project::whereIn('id', $userTeams)->orderBy('created_at', 'DESC')->get();
 
         $response = [
             "projects" => $project,
