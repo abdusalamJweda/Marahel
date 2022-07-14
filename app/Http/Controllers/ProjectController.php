@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Arr;
 use App\Models\Project;
 use App\Models\Phase;
 use Illuminate\Http\Response;
 use App\Models\Role;
 use App\Models\Teams;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProjectStoreRequest;
 use Illuminate\Support\Facades\DB;
@@ -117,12 +118,31 @@ class ProjectController extends Controller
         $project = Project::where('id', $fileds['project_id'])->first();
         $teams = Teams::where('project_id', $fileds['project_id'])->get()->toArray();
         $phases = Phase::where('project_id', $fileds['project_id'])->get()->toArray();
+        $phaseidBringer = Phase::where('project_id', $fileds['project_id'])->pluck('id');
         
-        $response = [
-            "project" => $project,
-            "phases" => $phases,
-            "teams"=> $teams,
+                                                                                                     
+        foreach ($phaseidBringer as $x) {
+            $tasks[]= Task::where('phase_id', $x)->get();
+            
+           
+        };
 
+//Method to flatten an array
+        $new = [];
+while ($item = array_shift($tasks)) {
+   array_push($new, ...$item);
+}
+      
+   
+          
+        
+        
+
+        $response = [
+            "project"=>$project,
+            "phases"=> $phases,
+            "teams"=> $teams,   
+            "new"=>$new,  
         ];
         return $response;
     }
@@ -130,7 +150,6 @@ class ProjectController extends Controller
     public function update(Request $request)
     {
 
-        
         
 
         $fileds = $request->validate([

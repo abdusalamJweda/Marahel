@@ -23,7 +23,7 @@ class Project extends Model
         'name',
         'description',
         'due_date',
-
+        'phase_id',
         'removed',
         'status',
         'created_at',
