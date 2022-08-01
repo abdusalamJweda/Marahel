@@ -113,6 +113,7 @@ class ProjectController extends Controller
 
         $fileds = $request->validate([
             'project_id' => 'required',
+
         ]);
 
 
@@ -175,26 +176,48 @@ while ($item = array_shift($tasks)) {
         // return $project;
     }
 
-    public function destroy(Request $request)
-    {
+    public function delete(Request $request){
+
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
         $fileds = $request->validate([
             'project_id' => 'required',
+            'deleteDate' => 'required'
         ]);
 
         $project = Project::findOrFail($fileds['project_id']);
-        if($project->user_id != auth()->user()->currentAccessToken()->tokenable['id']){
-            return response([
-                "message" => "you donot have permission"
-            ]);
-        }
+            if($project->user_id != auth()->user()->currentAccessToken()->tokenable['id']){
+                return response([
+                    "message" => "you donot have permission"
+                ]);
+             }
 
-        $project->delete();
 
-        return response([
-            "message" => "project Deleted"
-        ], 200);
+        // Project::update('update projects set deleted_at = ? where id = ?',[$DeleteProject,$project_id]);
+       Project::where('id', $fileds['project_id'])->update(array('deleted_at' => $fileds[ 'deleteDate']));
+    
+    
     }
+
+    // public function destroy(Request $request)
+    // {
+    //     $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+    //     $fileds = $request->validate([
+    //         'project_id' => 'required',
+    //     ]);
+
+    //     $project = Project::findOrFail($fileds['project_id']);
+    //     if($project->user_id != auth()->user()->currentAccessToken()->tokenable['id']){
+    //         return response([
+    //             "message" => "you donot have permission"
+    //         ]);
+    //     }
+
+    //     $project->();
+
+    //     return response([
+    //         "message" => "project Deleted"
+    //     ], 200);
+    // }
 
 
 }
