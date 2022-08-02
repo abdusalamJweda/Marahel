@@ -20,6 +20,18 @@ use Illuminate\Support\Facades\DB;
 class PhaseController extends Controller
 {
 
+    public function findPhasesByProjectId(Request $request){
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+
+        $fileds = $request->validate([
+            'project_id' => 'required'
+        ]);
+        $fileds['project_id'] = $fileds['project_id'] + 0;
+        $phases = Phase::where('project_id', $fileds['project_id'])->get()->all();
+        // $phases = Phase::all();
+
+        return response($phases);
+    }
     public function index()
     {
         // Phase::withTrashed()->get()->all(); to get with deleted

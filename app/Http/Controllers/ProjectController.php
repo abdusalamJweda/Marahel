@@ -19,7 +19,7 @@ class ProjectController extends Controller
     public function index()
     {
         // Project::withTrashed()->get()->all(); to get with deleted
-        $projects = Project::all();
+        $projects = Project::all()->toJson();
         return $projects;
     }
 
@@ -31,37 +31,45 @@ class ProjectController extends Controller
     }
 
     public function recentProjects(){
-
-        
-
-
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
-
-
         $userProjects = Project::where('user_id', $userId)->orderBy('created_at', 'DESC')->get();
-        
         $userRoles = Role::where('user_id', $userId)->pluck('team_id')->toArray();
         $userTeams = Teams::where('id', $userRoles)->pluck('project_id')->toArray();
         $assignedProjects = Project::whereIn('id', $userTeams)->orderBy('created_at', 'DESC')->get();
-        
         if(!$userProjects && !$assignedProjects){
 
             return response([
                 "message" => "No projects yet :\ ",
             ]);
         }
-        
         $recentProjects = [
             $userProjects,
             $assignedProjects,
         ];
-
         return response([
             "userProjects" => $userProjects,
             "assignedProjects" => "cat"
         ]);
-
     }
+    public function flutterRecentProjects(){
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+        $userProjects = Project::where('user_id', $userId)->orderBy('created_at', 'DESC')->get();
+        $userRoles = Role::where('user_id', $userId)->pluck('team_id')->toArray();
+        $userTeams = Teams::where('id', $userRoles)->pluck('project_id')->toArray();
+        $assignedProjects = Project::whereIn('id', $userTeams)->orderBy('created_at', 'DESC')->get();
+        if(!$userProjects && !$assignedProjects){
+
+            return response([
+                "message" => "No projects yet :\ ",
+            ]);
+        }
+        $recentProjects = 
+            $userProjects->merge($assignedProjects)
+            
+        ;
+        return response($recentProjects) ;
+    }
+
     public function findByName(Request $request){
 
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];

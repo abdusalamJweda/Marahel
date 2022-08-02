@@ -47,7 +47,7 @@ use App\Http\Controllers\SearchController;
 // public routes
 // all should be in protected
 
-
+Route::get('projects', 'App\Http\Controllers\ProjectController@index');
 Route::post('register', 'App\Http\Controllers\AuthController@register');
 Route::post('logIn', 'App\Http\Controllers\AuthController@logIn');
 
@@ -55,11 +55,14 @@ Route::post('logIn', 'App\Http\Controllers\AuthController@logIn');
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('recentProjects', 'App\Http\Controllers\ProjectController@recentProjects');
-
+    Route::get('flutterRecentProjects', 'App\Http\Controllers\ProjectController@flutterRecentProjects');
     Route::get('logOut', 'App\Http\Controllers\AuthController@logOut');
+    Route::post('phases/findPhasesByProjectId', 'App\Http\Controllers\PhaseController@findPhasesByProjectId');
+    Route::post('tasks/findPTasksByPhaseId', 'App\Http\Controllers\TaskController@findPTasksByPhaseId');
+    Route::post('tasks/changeStatus', 'App\Http\Controllers\TaskController@changeStatus');
 
 
-    Route::get('projects', 'App\Http\Controllers\ProjectController@index');
+  
     Route::get('projects/findByName', 'App\Http\Controllers\ProjectController@findByName');
     Route::post('projects/store', 'App\Http\Controllers\ProjectController@store');
     Route::get('projects/show', 'App\Http\Controllers\ProjectController@show');
