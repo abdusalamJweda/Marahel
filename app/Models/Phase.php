@@ -11,6 +11,7 @@ class Phase extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
+        
         'description',
         'due_date',
         'project_id',
@@ -28,3 +29,4 @@ class Phase extends Model
         return $this->hasMany('App\Models\Task');
     }
 }
+

@@ -23,24 +23,31 @@ class Project extends Model
         'name',
         'description',
         'due_date',
-
-        // 'removed',
-        // 'status',
-        // 'created_at',
+        'phase_id',
+        'status',
+        'created_at',
         'user_id',
+      
     ];
 
+  
+
+    // public function gettDurationAtrribute(){
+    //     return due_date - created_at
+    // }
+  
     public function user(){
 
         return User::findOrFail($this->user_id);
         //$this->belongsTo('App\Models\User');
     }
 
+
     public function phases(){
 
-        return Phase::where('project_id', $this->id)->get();
+        // return Phase::where('project_id', $this->id)->get();
 
-        //$this->hasMany('App\Models\Phase');
+        return $this->hasMany('App\Models\Phase');
     }
 
     public function tasks(){

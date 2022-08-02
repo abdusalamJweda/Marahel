@@ -62,8 +62,8 @@ class PhaseController extends Controller
             'project_id' => 'required',
             'name'=> 'required',
             'description'=> 'required',
-            'due_date'=> 'required',
-            'user_id' =>'required'
+            // 'due_date'=> 'required',
+            // 'user_id' =>'required'
         ]);
 
         

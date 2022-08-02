@@ -67,6 +67,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('projects/store', 'App\Http\Controllers\ProjectController@store');
     Route::get('projects/show', 'App\Http\Controllers\ProjectController@show');
     Route::post('projects/update', 'App\Http\Controllers\ProjectController@update');
+    Route::post('projects/delete', 'App\Http\Controllers\ProjectController@delete');
+
     Route::delete('projects/destroy', 'App\Http\Controllers\ProjectController@destroy');
 
     Route::get('phases', 'App\Http\Controllers\PhaseController@index');
@@ -82,6 +84,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('phases/findByProjectId/{id}', 'App\Http\Controllers\PhaseController@findByProjectId');
     Route::get('phases/AllDoneByProjectId/{id}', 'App\Http\Controllers\PhaseController@AllDoneByProjectId');
     Route::get('tasks/findByPhaseId/{id}', 'App\Http\Controllers\TaskController@findByPhaseId');
+    Route::post('tasks/store', 'App\Http\Controllers\TaskController@store');
     Route::get('users/signIn/{email}/{password}', 'App\Http\Controllers\UserController@signIn');
 
     Route::get('users','App\Http\Controllers\UserController@index');

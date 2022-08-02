@@ -23,7 +23,7 @@ class TaskFactory extends Factory
             'description' => $this->faker->name(), //$this->faker->unique()->safeEmail(),
             'todo' => $this->faker->name(), 
             'due_date' => $this->faker->dateTime($max = 'now', $timezone = null),
-            'deleted_at' => $this->faker->numberBetween($min = 0, $max = 1),
+            // 'deleted_at' => $this->faker->numberBetween($min = 0, $max = 1),
             'status' => $this->faker->numberBetween($min = 0, $max = 1),
             'project_id'=> Project::pluck('id')[$this->faker->numberBetween(1, Project::count()-1)],
 
