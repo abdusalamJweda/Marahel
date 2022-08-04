@@ -90,20 +90,3 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('users','App\Http\Controllers\UserController@index');
 
 });
-
-
-
-
-// Route::apiResource('projects', ProjectController::class);
-
-
-
-// Route::apiResource('phases', PhaseController::class);
-
-// Route::apiResource('Roles', RoleController::class);
-
-// Route::apiResource('tasks', TaskController::class);
-
-// Route::apiResource('sub_tasks', SubTaskController::class);
-
-// Route::apiResource('users', UserController::class); 
