@@ -134,28 +134,30 @@ class ProjectController extends Controller
         $project = Project::where('id', $fileds['project_id'])->first();
         $teams = Team::where('project_id', $fileds['project_id'])->get()->toArray();
         $phases = Phase::where('project_id', $fileds['project_id'])->get()->toArray();
-        // $phaseidBringer = Phase::where('project_id', $fileds['project_id'])->pluck('id');
+        $phaseidBringer = Phase::where('project_id', $fileds['project_id'])->pluck('id');
 
-        // $tasks[] = array();
+        $tasks[] = array();
 
 
-        // foreach ($phaseidBringer as $x) {
-        //     $tasks[] = array_push(Task::where('phase_id', $x)->get());
-        // };
+        foreach ($phaseidBringer as $x) {
+            $tasks[]  = Task::where('phase_id', $x)->get();
+        };
 
         // dd($tasks);
-        // //Method to flatten an array
-        // $new = [];
-        // while ($item = array_shift($tasks)) {
-        //     array_push($new, ...$item);
-        // }
+        //Method to flatten an array
+        $new = [];
+        while ($item = array_shift($tasks)) {
+            array_push($new, ...$item);
+        }
 
         $response = [
             "project" => $project,
             "phases" => $phases,
             "teams" => $teams,
+            "tasks" => $tasks,
             
         ];
+        // return $tasks;
         return $response;
     }
 
