@@ -21,35 +21,28 @@ class PhaseController extends Controller
 {
 
     public function findPhasesByProjectId(Request $request){
-        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
 
         $fileds = $request->validate([
             'project_id' => 'required'
         ]);
         $fileds['project_id'] = $fileds['project_id'] + 0;
         $phases = Phase::where('project_id', $fileds['project_id'])->get()->all();
-        // $phases = Phase::all();
-
         return response($phases);
     }
     public function index()
     {
         // Phase::withTrashed()->get()->all(); to get with deleted
+
         $phases = Phase::all();
         return $phases;
     }
     public function findByName(Request $request)
     {
 
-        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
-
         $fileds = $request->validate([
-            
             'phase_name' => 'required'
-            
-            
         ]);
-        
+
         $phases = Phase::where('name', 'LIKE', "%{$fileds['phase_name']}%")->get()->all();
 
         return response($phases);
@@ -76,11 +69,9 @@ class PhaseController extends Controller
     public function show(Request $request)
     {
         
-        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
         $fileds = $request->validate([
             'phase_id' => 'required',
         ]);
-
 
         $phase = Phase::where('id', $fileds['phase_id'])->first();
 
@@ -90,9 +81,9 @@ class PhaseController extends Controller
             "phase" => $phase,
             "tasks" => $tasks
         ];
+
         return $response;
 
-        
     }
     public function update(Request $request)
     {
@@ -109,7 +100,7 @@ class PhaseController extends Controller
         $phase = Phase::findOrFail($fileds['phase_id']);
         
         $phase->update($fileds);
-        // dd($project);
+
         return $phase;
 
     }
@@ -121,9 +112,9 @@ class PhaseController extends Controller
         ]);
 
         $phase = Phase::findOrFail($fileds['phase_id']);
-        if($phase->project()->user()->id != auth()->user()->currentAccessToken()->tokenable['id']){
+        if($phase->project()->user()->id != $userId){
             return response([
-                "message" => "you donot have permission"
+                "message" => "you do not have permission"
             ]);
         }
 

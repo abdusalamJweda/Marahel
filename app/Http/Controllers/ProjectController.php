@@ -7,7 +7,7 @@ use App\Models\Project;
 use App\Models\Phase;
 use Illuminate\Http\Response;
 use App\Models\Role;
-use App\Models\Teams;
+use App\Models\Team;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProjectStoreRequest;
@@ -35,10 +35,15 @@ class ProjectController extends Controller
     public function recentProjects()
     {
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+
+
+
+
         $userProjects = Project::where('user_id', $userId)->orderBy('created_at', 'DESC')->get();
         $userRoles = Role::where('user_id', $userId)->pluck('team_id')->toArray();
-        $userTeams = Teams::where('id', $userRoles)->pluck('project_id')->toArray();
+        $userTeams = Team::whereIn('id', $userRoles)->pluck('project_id')->toArray();
         $assignedProjects = Project::whereIn('id', $userTeams)->orderBy('created_at', 'DESC')->get();
+       
         if (!$userProjects && !$assignedProjects) {
 
             return response([
@@ -51,7 +56,7 @@ class ProjectController extends Controller
         ];
         return response([
             "userProjects" => $userProjects,
-            "assignedProjects" => "cat"
+            "assignedProjects" => $assignedProjects
         ]);
     }
     public function flutterRecentProjects()
@@ -123,36 +128,33 @@ class ProjectController extends Controller
 
         $fileds = $request->validate([
             'project_id' => 'required',
-
         ]);
 
 
         $project = Project::where('id', $fileds['project_id'])->first();
-        $teams = Teams::where('project_id', $fileds['project_id'])->get()->toArray();
+        $teams = Team::where('project_id', $fileds['project_id'])->get()->toArray();
         $phases = Phase::where('project_id', $fileds['project_id'])->get()->toArray();
-        $phaseidBringer = Phase::where('project_id', $fileds['project_id'])->pluck('id');
+        // $phaseidBringer = Phase::where('project_id', $fileds['project_id'])->pluck('id');
+
+        // $tasks[] = array();
 
 
-        foreach ($phaseidBringer as $x) {
-            $tasks[] = Task::where('phase_id', $x)->get();
-        };
+        // foreach ($phaseidBringer as $x) {
+        //     $tasks[] = array_push(Task::where('phase_id', $x)->get());
+        // };
 
-        //Method to flatten an array
-        $new = [];
-        while ($item = array_shift($tasks)) {
-            array_push($new, ...$item);
-        }
-
-
-
-
-
+        // dd($tasks);
+        // //Method to flatten an array
+        // $new = [];
+        // while ($item = array_shift($tasks)) {
+        //     array_push($new, ...$item);
+        // }
 
         $response = [
             "project" => $project,
             "phases" => $phases,
             "teams" => $teams,
-            "new" => $new,
+            
         ];
         return $response;
     }
