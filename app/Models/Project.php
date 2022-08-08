@@ -55,10 +55,4 @@ class Project extends Model
         //$this->hasMany('App\Models\Task');
     }
 
-
-
-    // protected static function newFactory()
-    // {
-    //     return ProjectsFactory::new();
-    // }
 }

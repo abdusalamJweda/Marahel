@@ -46,8 +46,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+//  not used yet
+    public function assginedToProjects(){
+
+        $userRoles = Role::where('user_id', $this->id)->pluck('project_id')->toArray();
+        $assignedProjects = Project::whereIn('id', $userRoles)->orderBy('created_at', 'DESC')->get();
+        return $assignedProjects;
+    }
+
+
+
     public function projects(){
         return Project::where('user_id', $this->id)->get();
+    
         // $this->hasMany('App\Models\Project');
     }
 
