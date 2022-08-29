@@ -55,8 +55,8 @@ class PhaseController extends Controller
             'project_id' => 'required',
             'name'=> 'required',
             'description'=> 'required',
-            // 'due_date'=> 'required',
-            // 'user_id' =>'required'
+             'due_date'=> 'required',
+            
         ]);
 
         
@@ -123,6 +123,27 @@ class PhaseController extends Controller
         return response([
             "message" => "phase Deleted"
         ], 200);
+    }
+    public function delete(Request $request)
+    {
+
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+        $fileds = $request->validate([
+            'phase_id' => 'required',
+            'deleteDate' => 'required'
+        ]);
+
+        $project = Project::findOrFail($fileds['project_id']);
+        if ($project->user_id != auth()->user()->currentAccessToken()->tokenable['id']) {
+            return response([
+                "message" => "you don ot have permission"
+            ]);
+        }else{
+            $phase->delete();
+        }
+
+
+        
     }
 
 }
