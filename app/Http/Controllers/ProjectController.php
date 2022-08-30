@@ -132,29 +132,19 @@ class ProjectController extends Controller
 
 
         $project = Project::where('id', $fileds['project_id'])->first();
-        $teams = Team::where('project_id', $fileds['project_id'])->get()->toArray();
-        $phases = Phase::where('project_id', $fileds['project_id'])->get()->toArray();
+
+        // $teams = Team::where('project_id', $fileds['project_id'])->get()->toArray();
+        $teams = $project->teams;
+        $phases = $project->phases;
         $phaseidBringer = Phase::where('project_id', $fileds['project_id'])->pluck('id');
+        $tasks = $project->tasks;
 
-        $tasks[] = array();
-
-
-        foreach ($phaseidBringer as $x) {
-            $tasks[]  = Task::where('phase_id', $x)->get();
-        };
-
-        // dd($tasks);
-        //Method to flatten an array
-        $new = [];
-        while ($item = array_shift($tasks)) {
-            array_push($new, ...$item);
-        }
 
         $response = [
             "project" => $project,
             "phases" => $phases,
             "teams" => $teams,
-            "tasks" => $tasks,
+            "tasks"=>$tasks, 
             
         ];
         // return $tasks;
@@ -166,7 +156,7 @@ class ProjectController extends Controller
         $fileds = $request->validate([
 
             'project_id' => 'required',
-            'user_id' => 'required',
+
             'name' => '',
             'description' => '',
             'due_date' => '',

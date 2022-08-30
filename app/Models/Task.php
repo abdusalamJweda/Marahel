@@ -19,11 +19,12 @@ class Task extends Model
         'created_at',
         'updated_at',
         'user_id',
+        'project_id'
     ];
-    
-    public function subTasks(){
-        return $this->hasMany('App\Models\SubTask');
+    public function user (){
+        return $this->belongsTo('App\Models\User');
     }
+    
     public function phase(){
         return $this->belongsTo('App\Models\Phase');
     }
