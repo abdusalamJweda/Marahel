@@ -64,7 +64,7 @@ class ProjectController extends Controller
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
         $userProjects = Project::where('user_id', $userId)->orderBy('created_at', 'DESC')->get();
         $userRoles = Role::where('user_id', $userId)->pluck('team_id')->toArray();
-        $userTeams = Teams::where('id', $userRoles)->pluck('project_id')->toArray();
+        $userTeams = Team::where('id', $userRoles)->pluck('project_id')->toArray();
         $assignedProjects = Project::whereIn('id', $userTeams)->orderBy('created_at', 'DESC')->get();
         if (!$userProjects && !$assignedProjects) {
 

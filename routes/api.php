@@ -30,6 +30,13 @@ use App\Http\Controllers\SearchController;
 // });
 
 
+// messeging --test
+Route::get('/chat', [App\Http\Controllers\ChatsController::class, 'index']);
+Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
+
+
+//
+
 
 // public routes
 Route::post('register', 'App\Http\Controllers\AuthController@register');
@@ -37,7 +44,21 @@ Route::post('logIn', 'App\Http\Controllers\AuthController@logIn');
 Route::get('users','App\Http\Controllers\UserController@index');
 
 // protected routes
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('getUserId', [App\Http\Controllers\UserController::class, 'getUserId']);
+    Route::prefix('chat')->group(function () {
+        Route::post('/getChatList', [App\Http\Controllers\ChatsController::class, 'getChatList']);
+        Route::post('/getChat', [App\Http\Controllers\ChatsController::class, 'getChat']);
+    
+        Route::post('/send-message', [App\Http\Controllers\ChatsController::class, 'sendMessage']);
+    
+    });
+    Route::prefix('notification')->group(function () {
+        Route::get('/getNotifications', [App\Http\Controllers\NotificationController::class, 'getNotifications']);
+        
+        Route::post('/sendNotification', [App\Http\Controllers\NotificationController::class, 'sendNotification']);
+    });
 
     Route::get('recentProjects', 'App\Http\Controllers\ProjectController@recentProjects');
     Route::get('flutterRecentProjects', 'App\Http\Controllers\ProjectController@flutterRecentProjects');

@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function getUserId(Request $request){
+        return $request->user()->id;
+    }
  
     public function index()
     {

@@ -73,6 +73,8 @@ class TaskController extends Controller
 
     public function delete(Request $request)
     {
+        $user = $requst->user();
+
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
 
         $request = $request->validate([

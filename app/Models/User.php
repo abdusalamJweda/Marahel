@@ -79,4 +79,12 @@ class User extends Authenticatable
         return Role::where('user_id', $this->id)->get();
         // $this->hasMany('App\Models\Role');
     }
+    public function messages()
+    {
+        return $this->hasMany('App\Models\Message');
+    }   
+    public function notifications()
+    {
+        return $this->hasMany('App\Models\Notification');
+    } 
 }
