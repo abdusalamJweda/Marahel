@@ -20,9 +20,9 @@ class TaskController extends Controller
         ]);
 
         $fileds['phase_id'] = $fileds['phase_id'] + 0;
-        $phases = Task::where('phase_id', $fileds['phase_id'])->get()->all();
+        $tasks = Task::where('phase_id', $fileds['phase_id'])->get()->all();
 
-        return response($phases);
+        return response($tasks);
     }
     public function changeStatus(Request $request){
 
@@ -42,10 +42,24 @@ class TaskController extends Controller
 
     }
 
-    public function store(TaskStoreRequest $request)
+    public function store(Request $request)
     {
-        $validData = $request->validated();
-        Task::create($request->all());
+        $fileds = $request->validate([
+
+            'project_id'=>'required',
+            'phase_id' => 'required',
+            'name'=> 'required',
+            'description'=> 'required',
+            'due_date'=> 'required',
+            'phase_id' => 'required',
+            
+        ]);
+
+       $Tasks = Task::create($fileds);
+
+       return response([
+        $Tasks
+    ], 200);
     }
 
     public function show($id)
@@ -76,25 +90,44 @@ class TaskController extends Controller
         $user = $requst->user();
 
         $userId = auth()->user()->currentAccessToken()->tokenable['id'];
-
-        $request = $request->validate([
+        $fileds = $request->validate([
             'task_id' => 'required',
         ]);
 
-        $task = Task::find($request['task_id']);
-        if($task){
-            
-            $task->delete();
+        $task = Task::findOrFail($fileds['task_id']);
+        // if($task->project()->user()->id != $userId){
+        //     return response([
+        //         "message" => "you do not have permission"
+        //     ]);
+        // }
 
+        $task->delete();
+
+        return response([
+            "message" => "task Deleted"
+        ], 200);
+    
+    }
+
+    public function destroy(Request $request)
+    {
+        $userId = auth()->user()->currentAccessToken()->tokenable['id'];
+        $fileds = $request->validate([
+            'task_id' => 'required',
+        ]);
+
+        $task = Task::where('id',$fileds['task_id'])->get()->first();
+        if($task->project()->user()->id != $userId){
             return response([
-                "message" => "task Deleted"
-            ], 200);
+                "message" => "you do not have permission"
+            ]);
         }
-        else{
-            return response([
-                "message" => "task is not here"
-            ], 200);
-            
-        }
+
+        $task->delete();
+
+        return response([
+            "message" => "task Deleted"
+        ], 200);
+    
     }
 }

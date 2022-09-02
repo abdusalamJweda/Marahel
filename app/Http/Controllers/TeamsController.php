@@ -46,6 +46,8 @@ class TeamsController extends Controller
         $request = $request->validate([
             'id' => 'required',
         ]);
+
+        return Team::findOrFail(1);
         
     }
     public function addMember(Request $request){

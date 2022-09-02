@@ -51,8 +51,13 @@ class Project extends Model
     }
 
     public function tasks(){
-        return Task::where('project_id', $this->id)->get();
-        //$this->hasMany('App\Models\Task');
+        // return Task::where('project_id', $this->id)->get();
+        return $this->hasMany('App\Models\Task');
+    }
+
+    public function teams(){
+        // return Task::where('project_id', $this->id)->get();
+        return $this->hasMany('App\Models\Team');
     }
 
 }

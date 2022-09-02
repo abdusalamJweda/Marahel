@@ -42,6 +42,9 @@ Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMess
 Route::post('register', 'App\Http\Controllers\AuthController@register');
 Route::post('logIn', 'App\Http\Controllers\AuthController@logIn');
 Route::get('users','App\Http\Controllers\UserController@index');
+Route::post('/teams/show', 'App\Http\Controllers\TeamsController@show');
+
+
 
 // protected routes
 
@@ -71,6 +74,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('store', 'App\Http\Controllers\TaskController@store');
         Route::post('update', 'App\Http\Controllers\TaskController@update');
         Route::delete('delete', 'App\Http\Controllers\TaskController@delete');
+        Route::delete('destroy', 'App\Http\Controllers\TaskController@destroy');
 
 
     });
@@ -80,8 +84,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('store', 'App\Http\Controllers\ProjectController@store');
         Route::post('show', 'App\Http\Controllers\ProjectController@show');
         Route::post('update', 'App\Http\Controllers\ProjectController@update');
-        Route::post('delete', 'App\Http\Controllers\ProjectController@delete');
-        Route::delete('destroy', 'App\Http\Controllers\ProjectController@destroy');
+       
+        Route::DELETE('destroy', 'App\Http\Controllers\ProjectController@destroy');
 
     });
     Route::group(['prefix' => 'phases'], function(){
@@ -90,6 +94,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('store', 'App\Http\Controllers\PhaseController@store');
         Route::get('show', 'App\Http\Controllers\PhaseController@show');
         Route::post('update', 'App\Http\Controllers\PhaseController@update');
+        Route::post('delete', 'App\Http\Controllers\PhaseController@delete');
         Route::delete('destroy', 'App\Http\Controllers\PhaseController@destroy');
         Route::post('findPhasesByProjectId', 'App\Http\Controllers\PhaseController@findPhasesByProjectId');
 
